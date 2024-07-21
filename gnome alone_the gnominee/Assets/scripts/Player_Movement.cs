@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 
 public class Player_Movement : MonoBehaviour
@@ -9,6 +10,8 @@ public class Player_Movement : MonoBehaviour
     public float gravity = -9.81f;
     [SerializeField]
     private float mouseSensitivity = 100.0f;
+    [SerializeField]
+    private Transform horizontalEmpty;
 
 
     [SerializeField]
@@ -44,6 +47,11 @@ public class Player_Movement : MonoBehaviour
         float z = Input.GetAxis("Vertical");
         if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S))
         {
+            Vector3 currentRotation = transform.localEulerAngles;
+            Vector3 targetRotation = horizontalEmpty.localEulerAngles;
+
+            // Set only the y-axis rotation to match the target
+            transform.localRotation = Quaternion.Euler(currentRotation.x, targetRotation.y, currentRotation.z);
             anm.SetBool("isWalking", true);
             anm.SetBool("isIdle", false);
         }
@@ -65,13 +73,6 @@ public class Player_Movement : MonoBehaviour
 
         controller.Move(velocity * Time.deltaTime);
 
-        float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
         
-
-        xRotation -= mouseX;
-        //xRotation = Mathf.Clamp(xRotation, -90f, 90f);
-
-        playerBody.localRotation = Quaternion.Euler(0f, -xRotation, 0f);
-        transform.Rotate(Vector3.up * mouseX);
     }
 }

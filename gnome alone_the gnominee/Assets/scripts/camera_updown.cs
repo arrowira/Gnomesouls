@@ -6,6 +6,7 @@ using UnityEngine;
 public class camera_updown : MonoBehaviour
 {
     private float xRotation = 0f;
+    private float yRotation = 0f;
 
     [SerializeField] private float mouseSensitivity = 200.0f;
     // Start is called before the first frame update
@@ -21,6 +22,7 @@ public class camera_updown : MonoBehaviour
 
         xRotation -= mouseY;
         xRotation = Mathf.Clamp(xRotation, -40f, 40f);
+ 
 
         // Get the current rotation
         Vector3 currentRotation = transform.localEulerAngles;
